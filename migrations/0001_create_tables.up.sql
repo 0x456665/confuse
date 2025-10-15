@@ -7,6 +7,7 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255),
     display_name VARCHAR(255) NOT NULL,
+    bio TEXT,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     avatar_url TEXT,
