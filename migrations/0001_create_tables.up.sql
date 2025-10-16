@@ -14,9 +14,9 @@ CREATE TABLE users (
     reputation_score DECIMAL(10, 2) DEFAULT 0,
     total_ratings_given INTEGER DEFAULT 0,
     total_ratings_received INTEGER DEFAULT 0,
-    email_verified_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    email_verified_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Create accounts table
@@ -26,10 +26,10 @@ CREATE TABLE accounts (
     provider VARCHAR(255) NOT NULL,
     provider_account_id VARCHAR(255) NOT NULL,
     refresh_token TEXT,
-    expires_at TIMESTAMP,
+    expires_at TIMESTAMP WITH TIME ZONE,
     token_type VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -41,14 +41,14 @@ CREATE TABLE problems_or_tasks (
     content TEXT NOT NULL,
     file_url TEXT,
     tags JSONB,
-    difficulty VARCHAR(20) CHECK (difficulty IN ('easy', 'medium', 'hard')),
+    difficulty VARCHAR(20) CHECK (difficulty IN ('easy', 'medium', 'hard')) NOT NULL,
     average_rating DECIMAL(3, 2) DEFAULT 0,
     total_ratings INTEGER DEFAULT 0,
     total_submissions INTEGER DEFAULT 0,
     view_count INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -58,8 +58,8 @@ CREATE TABLE task_ratings (
     task_id UUID NOT NULL,
     rater_id UUID NOT NULL,
     rating_value INTEGER NOT NULL CHECK (rating_value BETWEEN 1 AND 4),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     FOREIGN KEY (task_id) REFERENCES problems_or_tasks(id) ON DELETE CASCADE,
     FOREIGN KEY (rater_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(task_id, rater_id)
@@ -72,14 +72,14 @@ CREATE TABLE submissions (
     task_id UUID NOT NULL,
     content TEXT NOT NULL,
     file_url TEXT,
-    status VARCHAR(50) CHECK (status IN ('draft', 'submitted')),
+    status VARCHAR(50) CHECK (status IN ('draft', 'submitted')) DEFAULT 'draft',
     average_rating DECIMAL(3, 2) DEFAULT 0,
     total_ratings INTEGER DEFAULT 0,
     is_featured BOOLEAN DEFAULT false,
-    submitted_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    submitted_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (task_id) REFERENCES problems_or_tasks(id) ON DELETE CASCADE
 );
@@ -90,8 +90,8 @@ CREATE TABLE submission_ratings (
     submission_id UUID NOT NULL,
     rater_id UUID NOT NULL,
     rating_value INTEGER NOT NULL CHECK (rating_value BETWEEN 1 AND 4),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
     FOREIGN KEY (rater_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(submission_id, rater_id)
@@ -104,9 +104,9 @@ CREATE TABLE task_comments (
     user_id UUID NOT NULL,
     comment TEXT NOT NULL,
     is_edited BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (task_id) REFERENCES problems_or_tasks(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -118,9 +118,9 @@ CREATE TABLE submission_comments (
     user_id UUID NOT NULL,
     comment TEXT NOT NULL,
     is_edited BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -132,9 +132,9 @@ CREATE TABLE task_comment_replies (
     user_id UUID NOT NULL,
     reply TEXT NOT NULL,
     is_edited BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (task_comment_id) REFERENCES task_comments(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -146,9 +146,9 @@ CREATE TABLE submission_comment_replies (
     user_id UUID NOT NULL,
     reply TEXT NOT NULL,
     is_edited BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    deleted_at TIMESTAMP WITH TIME ZONE,
     FOREIGN KEY (submission_comment_id) REFERENCES submission_comments(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -189,11 +189,11 @@ CREATE INDEX idx_submission_comment_replies_submission_comment_id ON submission_
 CREATE INDEX idx_submission_comment_replies_user_id ON submission_comment_replies(user_id);
 CREATE INDEX idx_submission_comment_replies_deleted_at ON submission_comment_replies(deleted_at);
 
--- Create function to automatically update updated_at timestamp
+-- Create function to automatically update updated_at TIMESTAMP WITH TIME ZONE
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
+    NEW.updated_at = NOW();
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

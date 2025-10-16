@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use uuid::Uuid;
@@ -13,9 +14,9 @@ pub struct User {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub avatar_url: Option<String>,
-    pub reputation_score: f32,
-    pub total_ratings_given: u32,
-    pub total_ratings_received: u32,
+    pub reputation_score: Decimal,
+    pub total_ratings_given: i32,
+    pub total_ratings_received: i32,
     pub email_verified_at: Option<DateTime<Utc>>,
     pub updated_at: DateTime<Utc>,
     pub created_at: DateTime<Utc>,

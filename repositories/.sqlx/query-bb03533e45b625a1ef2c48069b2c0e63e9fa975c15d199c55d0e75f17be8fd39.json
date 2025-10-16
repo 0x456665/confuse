@@ -1,0 +1,71 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT \n                id,\n                user_id,\n                provider,\n                provider_account_id,\n                refresh_token,\n                expires_at as \"expires_at: DateTime<Utc>\",\n                token_type,\n                updated_at as \"updated_at: DateTime<Utc>\",\n                created_at as \"created_at: DateTime<Utc>\"\n            FROM accounts\n            WHERE provider = $1 AND provider_account_id = $2\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "user_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "provider",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "provider_account_id",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "refresh_token",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "expires_at: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 6,
+        "name": "token_type",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "updated_at: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 8,
+        "name": "created_at: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "bb03533e45b625a1ef2c48069b2c0e63e9fa975c15d199c55d0e75f17be8fd39"
+}

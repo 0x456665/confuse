@@ -1,0 +1,21 @@
+pub mod account_repository;
+pub mod problems_or_tasks_repository;
+pub mod submission_comment_replies_repository;
+pub mod submission_comment_repository;
+pub mod submission_rating_repository;
+pub mod submissions_repository;
+pub mod task_comment_replies_repository;
+pub mod task_comment_repository;
+pub mod task_rating_repository;
+pub mod user_repository;
+
+pub use account_repository::*;
+pub use problems_or_tasks_repository::*;
+pub use submission_comment_replies_repository::*;
+pub use submission_comment_repository::*;
+pub use submission_rating_repository::*;
+pub use submissions_repository::*;
+pub use task_comment_replies_repository::*;
+pub use task_comment_repository::*;
+pub use task_rating_repository::*;
+pub use user_repository::*;

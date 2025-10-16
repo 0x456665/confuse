@@ -1,0 +1,100 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            DELETE FROM users\n            WHERE id = $1\n            RETURNING \n                id,\n                email,\n                password_hash,\n                display_name,\n                bio,\n                first_name,\n                last_name,\n                avatar_url,\n                reputation_score as \"reputation_score!: Decimal\",\n                total_ratings_given as \"total_ratings_given!: i32\",\n                total_ratings_received as \"total_ratings_received!: i32\",\n                email_verified_at as \"email_verified_at: DateTime<Utc>\",\n                created_at as \"created_at!: DateTime<Utc>\",\n                updated_at as \"updated_at!: DateTime<Utc>\"\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "email",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "password_hash",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "display_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "bio",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "first_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "last_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "avatar_url",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 8,
+        "name": "reputation_score!: Decimal",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 9,
+        "name": "total_ratings_given!: i32",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 10,
+        "name": "total_ratings_received!: i32",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 11,
+        "name": "email_verified_at: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 12,
+        "name": "created_at!: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 13,
+        "name": "updated_at!: DateTime<Utc>",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "e4ba343fee8ddc7093595b97d2789e6f6f4a92908f6df886afddbc38eabe5011"
+}

@@ -8,7 +8,7 @@ pub struct TaskRating {
     pub id: Uuid,
     pub task_id: Uuid,
     pub rater_id: Uuid,
-    pub rating_value: u8,
+    pub rating_value: i32,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }

@@ -1,3 +1,3 @@
 [workspace]
-members = ["models"]
+members = ["models", "repositories"]
 resolver="3"
