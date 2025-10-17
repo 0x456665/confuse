@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use chrono::{DateTime, Utc};
 use uuid::Uuid;
 use models::TaskComment;
 

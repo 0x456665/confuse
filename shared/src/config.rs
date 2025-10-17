@@ -1,8 +1,31 @@
-use dotenvy::dotenv;
 use std::env;
 
 pub struct Config {
-    pub DATABASE_URL: String = env::var("DATABASE_URL").expect("DATABASE_URL must be set").to_owned(),
-    pub ACCESS_SECRET: String = env::var("ACCESS_SECRET").expect("JWT_SECRET must be set").to_owned(),
-    pub REFRESH_SECRET: String = env::var("REFRESH_SECRET").expect("JWT_SECRET must be set").to_owned(),
+    pub database_url: String,
+    pub access_secret: String,
+    pub refresh_secret: String,
+    pub access_token_duration: String,
+    pub refresh_token_duration: String,
+}
+
+impl Config {
+    pub fn new() -> Self {
+        Self {
+            database_url: env::var("DATABASE_URL")
+                .expect("DATABASE_URL must be set")
+                .to_owned(),
+            access_secret: env::var("ACCESS_SECRET")
+                .expect("ACCESS_SECRET must be set")
+                .to_owned(),
+            refresh_secret: env::var("REFRESH_SECRET")
+                .expect("REFRESH_SECRET must be set")
+                .to_owned(),
+            access_token_duration: env::var("ACCESS_TOKEN_DURATION_MINUTES")
+                .expect("ACCESS_TOKEN_DURATION must be set")
+                .into(),
+            refresh_token_duration: env::var("REFRESH_TOKEN_DURATION_DAYS")
+                .expect("ACCESS_TOKEN_DURATION must be set")
+                .into(),
+        }
+    }
 }

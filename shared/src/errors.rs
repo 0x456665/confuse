@@ -1,9 +1,4 @@
-use axum::{
-    Json,
-    http::StatusCode,
-    response::{IntoResponse, Response},
-};
-use serde::{Deserialize, Serialize};
+use axum::http::StatusCode;
 use std::fmt;
 
 /// Application error types
