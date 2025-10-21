@@ -1,4 +1,6 @@
 use crate::config::Config;
+use axum::extract::FromRef;
+use redis::aio::MultiplexedConnection;
 use repositories::{
     repositories::{
         AccountRepository, ProblemOrTaskRepository, SubmissionCommentReplyRepository,
@@ -16,12 +18,15 @@ use repositories::{
 use sqlx::PgPool;
 use std::sync::Arc;
 
+#[derive(Clone, FromRef)]
 pub struct AppState {
     pub db: PgPool,
     pub config: Config,
     pub repos: AppRepositories,
+    pub redis: MultiplexedConnection,
 }
 
+#[derive(Clone)]
 pub struct AppRepositories {
     pub user: Arc<dyn UserRepositoryTrait>,
     pub account: Arc<dyn AccountRepositoryTrait>,
@@ -36,11 +41,12 @@ pub struct AppRepositories {
 }
 
 impl AppState {
-    pub fn new(db: PgPool, config: Config) -> Self {
+    pub fn new(db: PgPool, config: Config, redis: MultiplexedConnection) -> Self {
         Self {
             db: db.clone(),
+            redis: redis.clone(),
             config,
-            repos: AppRepositories::new(db),
+            repos: AppRepositories::new(db.clone()),
         }
     }
 }

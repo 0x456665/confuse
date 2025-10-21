@@ -74,8 +74,8 @@ impl UserRepositoryTrait for UserRepository {
 
         Ok(user)
     }
-
-    async fn get_user_by_id(&self, user_id: Uuid) -> Result<User, sqlx::Error> {
+    
+    async fn get_user_by_id(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error> {
         sqlx::query_as!(
             User,
             r#"
@@ -99,11 +99,11 @@ impl UserRepositoryTrait for UserRepository {
             "#,
             user_id
         )
-        .fetch_one(&self.pool)
+        .fetch_optional(&self.pool)
         .await
     }
-
-    async fn get_user_by_email(&self, email: String) -> Result<User, sqlx::Error> {
+    
+    async fn get_user_by_email(&self, email: String) -> Result<Option<User>, sqlx::Error> {
         sqlx::query_as!(
             User,
             r#"
@@ -127,11 +127,11 @@ impl UserRepositoryTrait for UserRepository {
             "#,
             email
         )
-        .fetch_one(&self.pool)
+        .fetch_optional(&self.pool)
         .await
     }
 
-    async fn get_user_by_display_name(&self, display_name: String) -> Result<User, sqlx::Error> {
+    async fn get_user_by_display_name(&self, display_name: String) -> Result<Option<User>, sqlx::Error> {
         sqlx::query_as!(
             User,
             r#"
@@ -155,7 +155,7 @@ impl UserRepositoryTrait for UserRepository {
             "#,
             display_name
         )
-        .fetch_one(&self.pool)
+        .fetch_optional(&self.pool)
         .await
     }
 

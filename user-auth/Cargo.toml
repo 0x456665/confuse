@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+axum = { version = "0.8.6", features = ["macros"] }
+async-trait = "0.1.89"
 chrono = "0.4.42"
 models = { version = "0.1.0", path = "../models" }
 rust_decimal = "1.39.0"
@@ -11,3 +13,5 @@ serde = { version = "1.0.228", features = ["derive"] }
 utoipa = { version = "5.4.0", features = ["chrono", "decimal", "uuid"] }
 uuid = { version = "1.18.1", features = ["serde"] }
 validator = { version = "0.20.0", features = ["derive"] }
+shared = { version = "0.1.0", path = "../shared" }
+lettre = { version = "0.11.19", features = ["builder"] }

@@ -185,3 +185,9 @@ impl From<jsonwebtoken::errors::Error> for AppError {
         }
     }
 }
+
+impl From<bcrypt::BcryptError> for AppError {
+    fn from(err: bcrypt::BcryptError) -> Self {
+        AppError::InternalServerError(err.to_string())
+    }
+}

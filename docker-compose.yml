@@ -1,0 +1,25 @@
+services:
+    confuse_redis:
+        image: redis:latest
+        container_name: confuse_redis_instance
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis_data:/data
+        command: redis-server --appendonly yes
+
+    confuse_postgres:
+        image: postgres:latest
+        container_name: confuse_postgres_instance
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: efemena
+            POSTGRES_USER: efemena
+            POSTGRES_DB: confuse_db
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    redis_data:
+    postgres_data:

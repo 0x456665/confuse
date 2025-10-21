@@ -18,11 +18,11 @@ pub trait UserRepositoryTrait: Send + Sync {
         email_verified_at: Option<DateTime<Utc>>,
     ) -> Result<User, sqlx::Error>;
 
-    async fn get_user_by_id(&self, user_id: Uuid) -> Result<User, sqlx::Error>;
+    async fn get_user_by_id(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error>;
 
-    async fn get_user_by_email(&self, email: String) -> Result<User, sqlx::Error>;
+    async fn get_user_by_email(&self, email: String) -> Result<Option<User>, sqlx::Error>;
 
-    async fn get_user_by_display_name(&self, display_name: String) -> Result<User, sqlx::Error>;
+    async fn get_user_by_display_name(&self, display_name: String) -> Result<Option<User>, sqlx::Error>;
 
     async fn update_user(
         &self,
