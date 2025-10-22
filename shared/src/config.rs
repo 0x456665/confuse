@@ -9,6 +9,10 @@ pub struct Config {
     pub refresh_token_duration: String,
     pub smtp_username: String,
     pub smtp_password: String,
+    pub otp_expiry_minutes: u64,
+    pub from_email: String,
+    pub support_email: Option<String>,
+    pub frontend_activation_url: Option<String>,
 }
 
 impl Config {
@@ -35,6 +39,13 @@ impl Config {
             smtp_username: env::var("SMTP_USERNAME")
                 .expect("SMTP_USERNAME must be set")
                 .to_owned(),
+            otp_expiry_minutes: env::var("OTP_EXPIRY_MINUTES")
+                .expect("OTP_EXPIRY_MINTES must be set")
+                .parse()
+                .expect("OTP expiry not a number"),
+            from_email: env::var("FROM_EMAIL").expect("FROM_EMAIL must be set"),
+            support_email: env::var("SUPPORT_EMAIL").ok(),
+            frontend_activation_url: env::var("FRONTEND_ACTIVATION_URL").ok(),
         }
     }
 }

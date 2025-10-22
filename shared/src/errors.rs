@@ -1,4 +1,5 @@
 use axum::http::StatusCode;
+use redis::RedisError;
 use std::fmt;
 
 /// Application error types
@@ -189,5 +190,11 @@ impl From<jsonwebtoken::errors::Error> for AppError {
 impl From<bcrypt::BcryptError> for AppError {
     fn from(err: bcrypt::BcryptError) -> Self {
         AppError::InternalServerError(err.to_string())
+    }
+}
+
+impl From<RedisError> for AppError {
+    fn from(err: RedisError) -> Self {
+        AppError::ServiceUnavailable(format!("Failed to send redis command: {}", err))
     }
 }

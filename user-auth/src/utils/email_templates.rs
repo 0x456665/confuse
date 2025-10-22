@@ -1,7 +1,7 @@
 pub fn activate_email_template(
     name: &str,
     otp: &str,
-    expiry_minutes: u32,
+    expiry_minutes: u64,
     activation_link: &str,
     support_email: &str,
 ) -> String {

@@ -5,9 +5,9 @@ use lettre::{
 use shared::{config::Config, errors::AppError};
 
 pub fn send_email(
-    from: String,
-    to: String,
-    subject: String,
+    from: &str,
+    to: &str,
+    subject: &str,
     body: String,
     reply_to_option: Option<String>,
     config: &Config,
