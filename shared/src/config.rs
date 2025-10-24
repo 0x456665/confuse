@@ -13,6 +13,7 @@ pub struct Config {
     pub from_email: String,
     pub support_email: Option<String>,
     pub frontend_activation_url: Option<String>,
+    pub frontend_url: String,
 }
 
 impl Config {
@@ -46,6 +47,9 @@ impl Config {
             from_email: env::var("FROM_EMAIL").expect("FROM_EMAIL must be set"),
             support_email: env::var("SUPPORT_EMAIL").ok(),
             frontend_activation_url: env::var("FRONTEND_ACTIVATION_URL").ok(),
+            frontend_url: env::var("FRONTEND_URL")
+                .expect("FRONTEND_URL must be set")
+                .to_owned(),
         }
     }
 }

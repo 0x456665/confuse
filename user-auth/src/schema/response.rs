@@ -46,10 +46,17 @@ impl From<User> for UserResponse {
 pub struct UserResponseWithToken {
     pub user: UserResponse,
     pub token: String,
+    pub message: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct ResponeOnlyMessage {
     pub status: String,
+    pub message: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
+pub struct UserResponseWithMessage {
+    pub user: UserResponse,
     pub message: String,
 }
