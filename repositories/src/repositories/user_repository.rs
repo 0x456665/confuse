@@ -158,20 +158,20 @@ impl UserRepositoryTrait for UserRepository {
         .fetch_optional(&self.pool)
         .await
     }
-
+    
     async fn update_user(
         &self,
         user_id: Uuid,
-        email: String,
+        email: Option<String>,
         password_hash: Option<String>,
-        display_name: String,
+        display_name: Option<String>,
         bio: Option<String>,
         first_name: Option<String>,
         last_name: Option<String>,
         avatar_url: Option<String>,
-        reputation_score: Decimal,
-        total_ratings_given: i32,
-        total_ratings_received: i32,
+        reputation_score: Option<Decimal>,
+        total_ratings_given: Option<i32>,
+        total_ratings_received: Option<i32>,
         email_verified_at: Option<DateTime<Utc>>,
     ) -> Result<User, sqlx::Error> {
         sqlx::query_as!(
@@ -179,17 +179,17 @@ impl UserRepositoryTrait for UserRepository {
             r#"
             UPDATE users
             SET
-                email = $2,
-                password_hash = $3,
-                display_name = $4,
-                bio = $5,
-                first_name = $6,
-                last_name = $7,
-                avatar_url = $8,
-                reputation_score = $9,
-                total_ratings_given = $10,
-                total_ratings_received = $11,
-                email_verified_at = $12,
+                email = COALESCE($2, email),
+                password_hash = COALESCE($3, password_hash),
+                display_name = COALESCE($4, display_name),
+                bio = COALESCE($5, bio),
+                first_name = COALESCE($6, first_name),
+                last_name = COALESCE($7, last_name),
+                avatar_url = COALESCE($8, avatar_url),
+                reputation_score = COALESCE($9, reputation_score),
+                total_ratings_given = COALESCE($10, total_ratings_given),
+                total_ratings_received = COALESCE($11, total_ratings_received),
+                email_verified_at = COALESCE($12, email_verified_at),
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = $1
             RETURNING

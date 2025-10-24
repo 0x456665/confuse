@@ -2,8 +2,8 @@ use chrono::{DateTime, Utc};
 use models::User;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 use utoipa::ToSchema;
+use uuid::Uuid;
 
 #[derive(Debug, Deserialize, Serialize, ToSchema)]
 pub struct UserResponse {
@@ -40,4 +40,16 @@ impl From<User> for UserResponse {
             updated_at: user.created_at,
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Debug, ToSchema)]
+pub struct UserResponseWithToken {
+    pub user: UserResponse,
+    pub token: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
+pub struct ResponeOnlyMessage {
+    pub status: String,
+    pub message: String,
 }

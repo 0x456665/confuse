@@ -27,16 +27,16 @@ pub trait UserRepositoryTrait: Send + Sync {
     async fn update_user(
         &self,
         user_id: Uuid,
-        email: String,
+        email: Option<String>,
         password_hash: Option<String>,
-        display_name: String,
+        display_name: Option<String>,
         bio: Option<String>,
         first_name: Option<String>,
         last_name: Option<String>,
         avatar_url: Option<String>,
-        reputation_score: Decimal,
-        total_ratings_given: i32,
-        total_ratings_received: i32,
+        reputation_score: Option<Decimal>,
+        total_ratings_given: Option<i32>,
+        total_ratings_received: Option<i32>,
         email_verified_at: Option<DateTime<Utc>>,
     ) -> Result<User, sqlx::Error>;
 

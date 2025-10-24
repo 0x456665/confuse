@@ -33,10 +33,18 @@ pub struct UpdateUserRequest {
     pub display_name: Option<String>,
     #[validate(length(max = 500, message = "Bio can not exceed 500 characters"))]
     pub bio: Option<String>,
-    
-     #[validate(length(max = 50, message = "firstname can not be more than 50 characters"))]
+
+    #[validate(length(max = 50, message = "firstname can not be more than 50 characters"))]
     pub first_name: Option<String>,
-    
-     #[validate(length(max = 50, message = "firstname can not be more than 50 characters"))]
+
+    #[validate(length(max = 50, message = "firstname can not be more than 50 characters"))]
     pub last_name: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Validate, Serialize)]
+pub struct VerifyEmailRequest {
+    #[validate(email(message = "Invalid email format"))]
+    pub email: String,
+    #[validate(length(min = 8, message = "Password must be at least 8 characters"))]
+    pub otp: String,
 }
