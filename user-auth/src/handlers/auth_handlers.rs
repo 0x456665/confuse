@@ -9,6 +9,7 @@
 // - Handle HTTP-specific concerns (status codes, cookies)
 // ============================================================================
 
+use crate::schema::dto::RefreshTokenDto;
 use crate::schema::request::{
     CreateUserRequest, ForgotPasswordRequest, LoginRequest, ResetPasswordRequest,
     VerifyEmailRequest,
@@ -16,7 +17,7 @@ use crate::schema::request::{
 use crate::schema::response::{
     LoginResponse, RefreshTokenResponse, ResponeOnlyMessage, UserResponse,
 };
-use crate::services::auth_service::{AuthService, RefreshTokenDto};
+use crate::services::auth_service::AuthService;
 use axum::{Json, extract::State, http::StatusCode, response::IntoResponse};
 use axum_extra::extract::{
     CookieJar,

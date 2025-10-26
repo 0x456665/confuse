@@ -1,3 +1,4 @@
+use crate::schema::dto::{LoginResultDto, RefreshResultDto, RefreshTokenDto};
 use crate::schema::request::{
     CreateUserRequest, ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, VerifyEmailRequest
 };
@@ -20,27 +21,6 @@ const FORGOT_PASSWORD_EXPIRY_MULTIPLIER: u64 = 2;
 const SECONDS_PER_MINUTE: u64 = 60;
 const DAYS_TO_SECONDS: u64 = 24 * 60 * 60;
 
-#[derive(Debug, Clone)]
-pub struct LoginResultDto {
-    pub user: UserResponse,
-    pub access_token: String,
-    pub refresh_token: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct RefreshResultDto {
-    pub access_token: String,
-    pub refresh_token: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct RefreshTokenDto {
-    pub refresh_token: String,
-}
-
-// ============================================================================
-// AuthService - Business Logic Layer
-// ============================================================================
 
 pub struct AuthService {
     state: AppState,
