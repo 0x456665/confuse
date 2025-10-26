@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-#[derive(Debug, Deserialize, Serialize, ToSchema)]
+#[derive(Debug, Deserialize, Serialize, ToSchema, Clone)]
 pub struct UserResponse {
     pub id: Uuid,
     pub email: String,
@@ -59,4 +59,18 @@ pub struct ResponeOnlyMessage {
 pub struct UserResponseWithMessage {
     pub user: UserResponse,
     pub message: String,
+}
+
+#[derive(Serialize, ToSchema, Deserialize, Debug)]
+pub struct LoginResponse {
+    pub message: String,
+    pub status: String,
+    pub access_token: String,
+    pub user: UserResponse,
+}
+
+#[derive(Serialize, ToSchema, Deserialize, Debug)]
+pub struct RefreshTokenResponse {
+    pub status: String,
+    pub access_token: String,
 }

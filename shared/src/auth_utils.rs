@@ -2,7 +2,10 @@ use crate::errors::AppError;
 use axum::{extract::Request, http::header::AUTHORIZATION};
 use bcrypt::{DEFAULT_COST, hash, verify};
 use chrono::{Duration, Utc};
-use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
+use jsonwebtoken::{
+    DecodingKey, EncodingKey, Header, Validation, decode, encode,
+    errors::{self, ErrorKind},
+};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -41,10 +44,16 @@ pub fn generate_token(
     user_id: &Uuid,
     token_type: TokenType,
     secret: &str,
-    duration: i64,
-) -> Result<String, jsonwebtoken::errors::Error> {
+    duration: u64,
+) -> Result<String, errors::Error> {
     let now = Utc::now();
-    let exp = (now + Duration::hours(duration)).timestamp() as usize;
+    let exp = (now
+        + Duration::hours(
+            duration
+                .try_into()
+                .map_err(|_| errors::Error::from(ErrorKind::InvalidSignature))?,
+        ))
+    .timestamp() as usize;
     let iat = now.timestamp() as usize;
 
     let claims = Claims {

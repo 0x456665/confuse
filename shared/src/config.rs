@@ -5,8 +5,8 @@ pub struct Config {
     pub database_url: String,
     pub access_secret: String,
     pub refresh_secret: String,
-    pub access_token_duration: String,
-    pub refresh_token_duration: String,
+    pub access_token_duration: u64,
+    pub refresh_token_duration: u64,
     pub smtp_username: String,
     pub smtp_password: String,
     pub otp_expiry_minutes: u64,
@@ -14,6 +14,7 @@ pub struct Config {
     pub support_email: Option<String>,
     pub frontend_activation_url: Option<String>,
     pub frontend_url: String,
+    pub environment: String,
 }
 
 impl Config {
@@ -30,10 +31,12 @@ impl Config {
                 .to_owned(),
             access_token_duration: env::var("ACCESS_TOKEN_DURATION_MINUTES")
                 .expect("ACCESS_TOKEN_DURATION must be set")
-                .into(),
+                .parse()
+                .expect("A number for ACCESS_TOKEN_DURATION_MINUTES must be set"),
             refresh_token_duration: env::var("REFRESH_TOKEN_DURATION_DAYS")
                 .expect("ACCESS_TOKEN_DURATION must be set")
-                .into(),
+                .parse()
+                .expect("A number for REFRESH_TOKEN_DURATION_DAYS must be set"),
             smtp_password: env::var("SMTP_PASSWORD")
                 .expect("SMTP_PASSWORD must be set")
                 .to_owned(),
@@ -49,6 +52,9 @@ impl Config {
             frontend_activation_url: env::var("FRONTEND_ACTIVATION_URL").ok(),
             frontend_url: env::var("FRONTEND_URL")
                 .expect("FRONTEND_URL must be set")
+                .to_owned(),
+            environment: env::var("ENVIRONMENT")
+                .expect("ENVIRONMENT must be set")
                 .to_owned(),
         }
     }
